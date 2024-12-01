@@ -94,26 +94,6 @@ python src/scripts/detection.py --argN
 
 ---
 
-## Example Configuration (`configs/diffusion_config.yaml`)
-```yaml
-model:
-  type: UNet
-  layers: 5
-  features: [16, 32, 64, 128]
-
-training:
-  epochs: 50
-  batch_size: 32
-  learning_rate: 0.001
-
-data:
-  train_path: data/train
-  val_path: data/val
-  test_path: data/test
-```
-
----
-
 ## Datasets
 
 This project uses two publicly available datasets:
