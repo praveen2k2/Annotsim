@@ -9,11 +9,11 @@ import numpy as np
 from matplotlib import animation
 from torch import optim
 
-import dataset
+from utils import dataset
 import evaluation
 from GaussianDiffusion import GaussianDiffusionModel, get_beta_schedule
 from helpers import *
-# from UNet import UNetModel, update_ema_params
+from UNet import UNetModel, update_ema_params
 from TUVW import UViT, update_ema_params
 torch.cuda.empty_cache()
 

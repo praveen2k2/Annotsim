@@ -1,0 +1,7 @@
+README.md
+setup.py
+src/Annotsim.egg-info/PKG-INFO
+src/Annotsim.egg-info/SOURCES.txt
+src/Annotsim.egg-info/dependency_links.txt
+src/Annotsim.egg-info/requires.txt
+src/Annotsim.egg-info/top_level.txt

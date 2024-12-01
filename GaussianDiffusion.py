@@ -5,18 +5,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import evaluation
-from helpers import *
-from simplex import Simplex_CLASS
-from Simplex.noise import OpenSimplex
-import value_noise
+from utils.helpers import *
+from utils.simplex import Simplex_CLASS
+# from opensimplex import OpenSimplex
+from utils.Simplex.noise import OpenSimplex
+# import value_noise # Not available
 import torch
 from torch import nn
 # Simplex_instance = OpenSimplex(seed = 100)
 import os
-from MS_SSIM import MS_SSIM_L1_LOSS
+# from MS_SSIM import MS_SSIM_L1_LOSS
 from LossFun.pytorch_msssim import ssim, ms_ssim, SSIM, MS_SSIM
 
-from patchify import patchify, unpatchify, batch_patchify
+from patchify import patchify, unpatchify
 # os['CUDA_LAUNCH_BLOCKING'] = 1
 
 def get_beta_schedule(num_diffusion_steps, name="cosine"):
