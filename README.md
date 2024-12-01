@@ -1,9 +1,13 @@
-# Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet (WACV 2024)
+Here’s a comprehensive and polished `README.md` file for your repository:
 
-This repository contains the implementation of an anomaly detection approach utilizing Denoising Diffusion Probabilistic Models (DDPMs) with simplex noise, developed in PyTorch. The work focuses on leveraging diffusion models for self-supervised anomaly segmentation.
+---
 
-The code was written by [Komal Kumar](https://github.com/MAXNORM8650) and draws inspiration from the following repositories:
-- [Denoising Diffusion Model for Anomaly Detection](https://github.com/Julian-Wyatt/AnoDDPM)
+# Annotsim: Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet (WACV 2024)
+
+This repository contains the implementation of an anomaly detection framework using Denoising Diffusion Probabilistic Models (DDPMs) with simplex noise, developed in PyTorch. Annotsim provides tools for training, evaluating, and experimenting with self-supervised anomaly segmentation in medical imaging and beyond.
+
+The project was developed by [Komal Kumar](https://github.com/MAXNORM8650) and draws inspiration from:
+- [AnoDDPM](https://github.com/Julian-Wyatt/AnoDDPM)
 - [Predictive Convolutional Attentive Block](https://github.com/ristea/sspcab)
 - [Guided Diffusion](https://github.com/openai/guided-diffusion)
 
@@ -11,10 +15,11 @@ The code was written by [Komal Kumar](https://github.com/MAXNORM8650) and draws 
 
 ## Features
 
-- **Custom Diffusion Models**: Extended UNet with selective denoising for better anomaly segmentation.
-- **Simplex Noise Generator**: Supports 3D/4D noise generation for enhanced applications.
-- **Comprehensive Evaluation**: Includes scripts for precision, recall, and Dice score calculation.
-- **Visualization Tools**: Generates diffusion videos and detection images for better interpretability.
+- **Custom Diffusion Models**: An extended UNet with selective denoising capabilities.
+- **Dynamic Transformer Blocks**: Enhancements for dynamic anomaly segmentation.
+- **Simplex Noise Integration**: Supports 3D/4D noise generation for improved feature diversity.
+- **Comprehensive Evaluation Metrics**: Tools to calculate precision, recall, Dice score, and more.
+- **Visualization Tools**: Generates diffusion videos and detection outputs for interpretability.
 
 ---
 
@@ -31,23 +36,19 @@ The code was written by [Komal Kumar](https://github.com/MAXNORM8650) and draws 
 
 ---
 
-## Repository Structure
+## Project Structure
 
-### Core Files
-- **`dataset.py`**: Custom dataset loader for training and testing.
-- **`detection.py`**: Handles detection metrics and experimentation.
-- **`diffusion_training.py`**: Implements the training loop for diffusion models.
-- **`evaluation.py`**: Functions for evaluating model performance.
-- **`GaussianDiffusion.py`**: Implements Gaussian architecture for diffusion models.
-- **`helpers.py`**: Utility functions for operations like checkpoint handling.
-- **`simplex.py`**: A simplex noise generator extended for 3D/4D noise.
-- **`UNet.py`**: Implements a custom UNet with selective denoising blocks.
-
-### Key Directories
-- **`test_args/`**: Contains JSON configuration files for testing.
-- **`model/diff-params-ARGS={i}/`**: Checkpoints saved during training.
-- **`diffusion-videos/ARGS={i}/`**: Video outputs generated during training and testing.
-- **`diffusion-training-images/ARGS={i}/`**: Images generated during diffusion training and detection.
+```plaintext
+Annotsim/
+├── src/
+│   ├── models/               # Model architectures (UNet, transformer blocks, etc.)
+│   ├── utils/                # Helper functions (dataset loading, noise generation, etc.)
+│   ├── scripts/              # Training and evaluation scripts
+├── requirements.txt          # Python dependencies
+├── setup.py                  # Installation script
+├── README.md                 # Project documentation
+└── .gitignore                # Ignored files and directories
+```
 
 ---
 
@@ -63,3 +64,109 @@ The code was written by [Komal Kumar](https://github.com/MAXNORM8650) and draws 
    ```bash
    git clone https://github.com/MAXNORM8650/Annotsim.git
    cd Annotsim
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Install the repository as a package:
+   ```bash
+   pip install -e .
+   ```
+
+---
+
+## Usage
+
+### Train a Diffusion Model
+To train a diffusion model:
+```bash
+python src/scripts/diffusion_training_UVW.py --config configs/diffusion_config.yaml
+```
+Replace `diffusion_config.yaml` with your desired configuration file.
+
+### Evaluate a Model
+To evaluate a model:
+```bash
+python src/scripts/detection.py --config configs/detection_config.yaml
+```
+
+---
+
+## Example Configuration (`configs/diffusion_config.yaml`)
+```yaml
+model:
+  type: UNet
+  layers: 5
+  features: [16, 32, 64, 128]
+
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+
+data:
+  train_path: data/train
+  val_path: data/val
+  test_path: data/test
+```
+
+---
+
+## Datasets
+
+This project uses two publicly available datasets:
+1. **BRATS2021**: A dataset for brain tumor segmentation.
+2. **Pneumonia X-Ray**: A dataset for chest X-ray anomaly detection.
+
+For more details, refer to the datasets' official documentation.
+
+---
+
+## Results
+
+### Diffusion Videos
+Generated videos during training and evaluation are saved in:
+```plaintext
+outputs/diffusion-videos/
+```
+
+### Detection Outputs
+Detection results are saved in:
+```plaintext
+outputs/detection-images/
+```
+
+---
+
+## Citation
+
+If you use this work in your research, please cite the following paper:
+```bibtex
+@inproceedings{kumar2023self,
+  title={Self-supervised Diffusion Model for Anomaly Segmentation in Medical Imaging},
+  author={Kumar, Komal and Chakraborty, Snehashis and Roy, Sudipta},
+  booktitle={International Conference on Pattern Recognition and Machine Intelligence},
+  pages={359--368},
+  year={2023},
+  organization={Springer}
+}
+```
+
+---
+
+## Contributors
+
+- **Komal Kumar**: [GitHub Profile](https://github.com/MAXNORM8650)
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Feel free to save this content as `README.md` in your repository. If you have additional details to include or adjustments to make, let me know!
