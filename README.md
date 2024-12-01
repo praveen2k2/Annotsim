@@ -82,14 +82,14 @@ Annotsim/
 ### Train a Diffusion Model
 To train a diffusion model:
 ```bash
-python src/scripts/diffusion_training_UVW.py --config configs/diffusion_config.yaml
+python src/scripts/diffusion_training_UVW.py --argN
 ```
-Replace `diffusion_config.yaml` with your desired configuration file.
+Replace `argN` with your desired configuration file from "test_args" file.
 
 ### Evaluate a Model
 To evaluate a model:
 ```bash
-python src/scripts/detection.py --config configs/detection_config.yaml
+python src/scripts/detection.py --argN
 ```
 
 ---
