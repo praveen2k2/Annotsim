@@ -1,5 +1,3 @@
-Here’s a comprehensive and polished `README.md` file for your repository:
-
 ---
 
 # Annotsim: Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet (WACV 2024)
