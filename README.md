@@ -1,4 +1,4 @@
-# Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet
+# Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet (WACV 2024)
 
 This is the github repository for an anomaly detection approach utilising DDPMs with simplex noise implemented in
 pytorch.
