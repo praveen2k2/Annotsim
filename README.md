@@ -5,13 +5,6 @@
 
 This repository contains the implementation of an anomaly detection framework using Denoising Diffusion Probabilistic Models (DDPMs) with simplex noise, developed in PyTorch. Annotsim provides tools for training, evaluating, and experimenting with self-supervised anomaly segmentation in medical imaging and beyond.
 
-The project was developed by [Komal Kumar](https://github.com/MAXNORM8650) and draws inspiration from:
-- [AnoDDPM](https://github.com/Julian-Wyatt/AnoDDPM)
-- [Predictive Convolutional Attentive Block](https://github.com/ristea/sspcab)
-- [Guided Diffusion](https://github.com/openai/guided-diffusion)
-
----
-
 ## Features
 
 - **Custom Diffusion Models**: An extended UNet with selective denoising capabilities.
@@ -140,12 +133,16 @@ If you use this work in your research, please cite the following paper:
 
 - **Komal Kumar**: [GitHub Profile](https://github.com/MAXNORM8650)
 
+The project imported from:
+- [AnoDDPM](https://github.com/Julian-Wyatt/AnoDDPM)
+- [Predictive Convolutional Attentive Block](https://github.com/ristea/sspcab)
+- [Guided Diffusion](https://github.com/openai/guided-diffusion)
+---
+
 ---
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-Feel free to save this content as `README.md` in your repository. If you have additional details to include or adjustments to make, let me know!
