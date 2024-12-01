@@ -1,0 +1,78 @@
+# Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet
+
+This is the github repository for an anomaly detection approach utilising DDPMs with simplex noise implemented in
+pytorch.
+
+The code was written by [Komal Kumar](https://github.com/MAXNORM8650) and is based on
+the [Denoising diffusion model for Anomaly detection repo](https://github.com/Julian-Wyatt/AnoDDPM), [Predictive Convolutional Attentive block repo](https://github.com/ristea/sspcab), and [guided-diffusion repo](https://github.com/openai/guided-diffusion).
+
+## Main file structure:
+This repository contains code for a project focused on diffusion models and detection. The project includes various components and functionalities for training, evaluation, and experimentation with these models. Below is a brief overview of the main files and directories in this repository:
+* dataset.py: This file provides a custom dataset loader, allowing you to load and preprocess your own dataset for training and testing.
+* detection.py: It contains code for generating measures, performing initial testing, and conducting experiments related to detection.
+* diffusion_training.py: This file implements the training procedure for your diffusion model, allowing you to train the model using your dataset.
+* evaluation.py: It includes functions for measuring and evaluating the performance of your diffusion model on different metrics and evaluation criteria.
+* GaussianDiffusion.py: This file represents a Gaussian architecture with custom detection capabilities. It is based on a forked version of the original code from the OpenAI repository.
+* helpers.py: It provides various helper functions that can be utilized in different parts of the project, such as loading checkpoints and handling common operations.
+* simplex.py: This file contains a class named Simplex that offers noise generation functionality. It is a forked version of the opensimplex library, with additional support for 3D and 4D noise generation for colored applications.
+* UNet.py: This file implements the UNet architecture, which is forked from the OpenAI repository. It includes an added selective-denoising block, enhancing the capabilities of the model.
+* In addition, the repository includes the following directories:
+* test_args/args{i}.json: These JSON files provide example arguments for testing and configuring different aspects of the project.
+* model/diff-params-ARGS={i}/params-final.pt: These files represent checkpoints saved during the training process. They can be used to restore and utilize trained models for further experimentation or deployment.
+* diffusion-videos/ARGS={i}/: This directory contains video outputs generated during various stages of training, testing, and detection. These videos can be helpful for visualizing the performance and progress of the models.
+* diffusion-training-images/ARGS={i}/: This directory contains detection images related to the project. These images can be used to showcase the results and illustrate the effectiveness of the detection algorithms implemented in the project.
+Feel free to modify and customize this description based on your project's specific details and goals.
+### Train
+
+To train a model, execute the following command: `python .\diffusion_training.py argsN`, where `argsN` corresponds to the number associated with the JSON argument file. These argument files can be found in the `./test_args/` directory, such as `args38.json`, for example.
+
+### Evaluate
+
+To evaluate a model, run the command `python .\detection.py argsN`, and make sure that the script executes the appropriate sub-function for evaluation.
+
+### Datasets
+
+The project utilizes two publicly available datasets: BRATS2021 and Pneumonia X-Ray. For more detailed information about these datasets, please refer to the accompanying paper.
+
+Feel free to modify and adapt this information as needed to accurately reflect the specific details and references related to your project's datasets.
+## Example args:
+
+{
+  "img_size": [
+    256,
+    256
+  ],
+  "Batch_Size": 1,
+  "EPOCHS": 4000,
+  "T": 1000,
+  "base_channels": 128,
+  "channels": 3,
+  "beta_schedule": "cosine",
+  "channel_mults": "",
+  "loss-type": "l2",
+  "loss_weight": "none",
+  "train_start": true,
+  "lr": 1e-4,
+  "random_slice": false,
+  "sample_distance": 800,
+  "weight_decay": 0.0,
+  "save_imgs": true,
+  "save_vids": false,
+  "dropout": 0,
+  "attention_resolutions": "32,16,8",
+  "num_heads": 2,
+  "num_head_channels": -1,
+  "noise_fn": "simplex",
+  "dataset": "pneumonia"
+}
+## Cite the paper:
+@inproceedings{kumar2023self,
+  title={Self-supervised Diffusion Model for Anomaly Segmentation in Medical Imaging},
+  author={Kumar, Komal and Chakraborty, Snehashis and Roy, Sudipta},
+  booktitle={International Conference on Pattern Recognition and Machine Intelligence},
+  pages={359--368},
+  year={2023},
+  organization={Springer}
+}
+
+
