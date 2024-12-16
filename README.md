@@ -115,22 +115,6 @@ outputs/detection-images/
 
 ---
 
-## Citation
-
-If you use this work in your research, please cite the following paper:
-```bibtex
-@inproceedings{kumar2023self,
-  title={Self-supervised Diffusion Model for Anomaly Segmentation in Medical Imaging},
-  author={Kumar, Komal and Chakraborty, Snehashis and Roy, Sudipta},
-  booktitle={International Conference on Pattern Recognition and Machine Intelligence},
-  pages={359--368},
-  year={2023},
-  organization={Springer}
-}
-```
-
----
-
 ## Contributors
 
 - **Komal Kumar**: [GitHub Profile](https://github.com/MAXNORM8650)
