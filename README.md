@@ -21,7 +21,7 @@ This research paper introduces a novel self-supervised anomaly detection method 
 
 | Distribution Visualization | Histogram Plot |
 |----------------------------|-----------------|
-| ![Distribution Visualization](assets/Timed_simplex_histogram1.png) | ![Histogram Plot](assets/Timed_simplex_histogram1.png) |
+| ![Distribution Visualization](assets/Timed_simlex_hitogram1.png) | ![Histogram Plot](plotes/Timed_simlex_hitogram1.png) |
 
 #### Qualitative Results
 
