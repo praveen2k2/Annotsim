@@ -17,6 +17,7 @@ This research paper introduces a novel self-supervised anomaly detection method 
 
 ### Diffusion Training Visualization
 ![Distribution visulization](assets/Timed_simlex_hitogram1.png) ![Histogram plot](plotes/Timed_simlex_hitogram1.png)
+![Qualitative results](assets/annointo_v3.jpg)[](assets/anno_introduction2.png) 
 ![Octave visulization](plotes/SIMPLEX_TEST_Oct.gif)
 ![SSIM Plot](assets/SSIM_plot.pdf)
 ![Time complexcity Plots](assets/time_complexity_plot.pdf)
