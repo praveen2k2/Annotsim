@@ -1,28 +1,26 @@
+I need in the same format "--
+
 # Annotsim: Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet (WACV 2024) 🚀
+This research paper introduces a novel self-supervised anomaly detection method for image segmentation. It employs a diffusion model utilising a newly developed four-dimensional simplex noise function (Tsimplex) for improved efficiency and sample quality, especially in higher-dimensional and coloured images. The core of the model is a Dynamic Transformer UNet (DTUNet), a modified Vision Transformer architecture designed to handle time and noise image patches as tokens. Extensive experiments across three datasets demonstrate significant performance improvements over existing generative-based anomaly detection methods, particularly in medical imaging. The source code is publicly available.
 
-This repository provides code and resources for the research paper *"Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet"*. The approach introduces a novel self-supervised anomaly detection method for image segmentation, employing a diffusion model enhanced by a newly developed four-dimensional simplex noise function (**Tsimplex**) and a **Dynamic Transformer UNet (DTUNet)**. The model is particularly effective for higher-dimensional and colored medical imaging tasks, outperforming existing generative-based methods.
+## Features
 
----
-
-## Key Features
-
-- **Custom Diffusion Models**: Extended UNet architecture with selective denoising capabilities.
-- **Dynamic Transformer Blocks**: Modified Vision Transformer (ViT) building blocks for dynamic segmentation tasks.
-- **Enhanced Simplex Noise**: Integration of 3D/4D simplex noise for improved feature diversity and sample quality.
-- **Comprehensive Evaluation Metrics**: Precision, recall, Dice score, and more for thorough model assessment.
-- **Visualization Tools**: Diffusion videos and detection outputs enable interpretability and qualitative analysis.
+- **Custom Diffusion Models**: An extended UNet with selective denoising capabilities.
+- **Dynamic Transformer Blocks**: Enhancements for dynamic anomaly segmentation.
+- **Simplex Noise Integration**: Supports 3D/4D noise generation for improved feature diversity.
+- **Comprehensive Evaluation Metrics**: Tools to calculate precision, recall, Dice score, and more.
+- **Visualization Tools**: Generates diffusion videos and detection outputs for interpretability.
 
 ---
 
 ## Example Outputs
 
 ### Diffusion Training Visualization
-![Distribution Visualization](assets/Timed_simplex_histogram1.png)  
-![Histogram Plot](assets/Timed_simplex_histogram1.png)  
-![Octave Visualization](assets/SIMPLEX_TEST_Oct.gif)  
-![SSIM Plot](assets/SSIM_plot.pdf)  
-![Time Complexity Plots](assets/time_complexity_plot.pdf)  
-![MRI Translation](assets/results/args200/Generation/1000_500_No22.png)
+![Distribution visulization](assets/Timed_simlex_hitogram1.png) ![Histogram plot](plotes/Timed_simlex_hitogram1.png)
+![Octave visulization](plotes/SIMPLEX_TEST_Oct.gif)
+![SSIM Plot](assets/SSIM_plot.pdf)
+![Time complexcity Plots](assets/time_complexity_plot.pdf)
+![MRI translation](assets/results/args200/Generation/1000_500_No22.png) 
 
 ### Anomaly Detection Results
 ![Anomaly Detection](assets/anomaly_detection_example.png)
@@ -34,115 +32,112 @@ This repository provides code and resources for the research paper *"Self-Superv
 
 ## Project Structure
 
+```plaintext
 Annotsim/
 ├── src/
-│   ├── models/               # Model architectures (UNet, Transformer blocks, etc.)
+│   ├── models/               # Model architectures (UNet, transformer blocks, etc.)
 │   ├── utils/                # Helper functions (dataset loading, noise generation, etc.)
 │   ├── scripts/              # Training and evaluation scripts
-├── assets/                   # Visualization assets and intermediate results
 ├── requirements.txt          # Python dependencies
 ├── setup.py                  # Installation script
 ├── README.md                 # Project documentation
 └── .gitignore                # Ignored files and directories
+```
 
-Installation
+---
 
-Prerequisites
-	•	Python 3.8+
-	•	CUDA-enabled GPU (recommended for training)
+## Installation
 
-Steps
-	1.	Clone the repository:
+### Prerequisites
+- Python 3.8 or later
+- CUDA-enabled GPU (optional but recommended for training)
 
-git clone https://github.com/MAXNORM8650/Annotsim.git
-cd Annotsim
+### Steps
 
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MAXNORM8650/Annotsim.git
+   cd Annotsim
+   ```
 
-	2.	Optional: Create a virtual environment:
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-python -m venv venv
-source venv/bin/activate  # For Windows: venv\Scripts\activate
+3. Install the repository as a package:
+   ```bash
+   pip install -e .
+   ```
 
+---
 
-	3.	Install dependencies:
+## Usage
 
-pip install -r requirements.txt
+### Train a Diffusion Model
+To train a diffusion model:
+```bash
+python src/scripts/diffusion_training_UVW.py --argN
+```
+Replace `argN` with your desired configuration file from "test_args" file.
 
+### Evaluate a Model
+To evaluate a model:
+```bash
+python src/scripts/detection.py --argN
+```
 
-	4.	Install as a package:
+---
 
-pip install -e .
+## Datasets
 
-Usage
+This project uses two publicly available datasets:
+1. **BRATS2021**: A dataset for brain tumor segmentation.
+2. **Pneumonia X-Ray**: A dataset for chest X-ray anomaly detection.
 
-Training a Diffusion Model
+For more details, refer to the datasets' official documentation.
 
-Use a configuration file from test_args:
+---
 
-python src/scripts/diffusion_training_UVW.py --config path/to/config.yaml
+## Results
 
-Evaluating a Model
+### Diffusion Videos
+Generated videos during training and evaluation are saved in:
+```plaintext
+outputs/diffusion-videos/
+```
 
-Evaluate the model on a dataset:
+### Detection Outputs
+Detection results are saved in:
+```plaintext
+outputs/detection-images/
+```
 
-python src/scripts/detection.py --config path/to/config.yaml
+---
 
-Datasets
+## Citation
 
-This project supports multiple datasets, including:
-	•	BRATS2021: Brain tumor segmentation dataset.
-	•	Pneumonia X-Ray: Chest X-ray anomaly detection dataset.
-
-Refer to their official documentation for more details:
-	•	BRATS2021
-	•	Pneumonia X-Ray
-
-Results
-	•	Diffusion Videos: Saved in outputs/diffusion-videos/
-	•	Detection Outputs: Saved in outputs/detection-images/
-
-Citation
-
-If you find this work helpful, please cite:
-
-@inproceedings{kumar2024annotsim,
-  title={Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet},
+If you use this work in your research, please cite the following paper:
+```bibtex
+@inproceedings{kumar2023self,
+  title={Self-supervised Diffusion Model for Anomaly Segmentation in Medical Imaging},
   author={Kumar, Komal and Chakraborty, Snehashis and Roy, Sudipta},
-  booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
-  pages={XXXX--XXXX},
-  year={2024},
-  organization={IEEE}
+  booktitle={International Conference on Pattern Recognition and Machine Intelligence},
+  pages={359--368},
+  year={2023},
+  organization={Springer}
 }
+```
 
-Contributors
-	•	Komal Kumar: GitHub Profile
+---
 
-This project builds upon and integrates work from:
-	•	AnoDDPM
-	•	Predictive Convolutional Attentive Block
-	•	Guided Diffusion
+## Contributors
 
-License
+- **Komal Kumar**: [GitHub Profile](https://github.com/MAXNORM8650)
 
-This project is licensed under the MIT License.
-
-Roadmap
-	•	Further dataset integrations
-	•	Enhanced visualization and interpretability tools
-	•	Real-time anomaly detection support
-
-FAQ
-
-Q1: Why use DTUNet over a traditional UNet?
-A: DTUNet’s integration of dynamic transformer blocks enables it to effectively handle temporal and noise-based image representations, improving anomaly segmentation performance in complex medical imaging scenarios.
-
-Q2: How do I customize the simplex noise function?
-A: Adjust parameters in utils/noise_generation.py as per the documentation for tailored noise generation strategies.
-
-Contact
-
-For inquiries or collaboration opportunities:
-	•	Komal Kumar: komal.kumar@example.com
-
-We welcome contributions and suggestions! Please open an issue or submit a pull request to get involved.
-
+The project imported from:
+- [AnoDDPM](https://github.com/Julian-Wyatt/AnoDDPM)
+- [Predictive Convolutional Attentive Block](https://github.com/ristea/sspcab)
+- [Guided Diffusion](https://github.com/openai/guided-diffusion)
+---
+" Improve it 
