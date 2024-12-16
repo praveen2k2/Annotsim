@@ -1,27 +1,28 @@
----
 # Annotsim: Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet (WACV 2024) 🚀
 
-This research paper introduces a novel self-supervised anomaly detection method for image segmentation. It employs a diffusion model utilizing a newly developed four-dimensional simplex noise function (**Tsimplex**) for improved efficiency and sample quality, especially in higher-dimensional and colored images. The core of the model is a **Dynamic Transformer UNet (DTUNet)**, a modified Vision Transformer architecture designed to handle time and noise image patches as tokens. Extensive experiments across three datasets demonstrate significant performance improvements over existing generative-based anomaly detection methods, particularly in medical imaging. The source code is publicly available.
+This repository provides code and resources for the research paper *"Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet"*. The approach introduces a novel self-supervised anomaly detection method for image segmentation, employing a diffusion model enhanced by a newly developed four-dimensional simplex noise function (**Tsimplex**) and a **Dynamic Transformer UNet (DTUNet)**. The model is particularly effective for higher-dimensional and colored medical imaging tasks, outperforming existing generative-based methods.
 
-## Features
+---
 
-- **Custom Diffusion Models**: An extended UNet with selective denoising capabilities.
-- **Dynamic Transformer Blocks**: Enhancements for dynamic anomaly segmentation.
-- **Simplex Noise Integration**: Supports 3D/4D noise generation for improved feature diversity.
-- **Comprehensive Evaluation Metrics**: Tools to calculate precision, recall, Dice score, and more.
-- **Visualization Tools**: Generates diffusion videos and detection outputs for interpretability.
+## Key Features
+
+- **Custom Diffusion Models**: Extended UNet architecture with selective denoising capabilities.
+- **Dynamic Transformer Blocks**: Modified Vision Transformer (ViT) building blocks for dynamic segmentation tasks.
+- **Enhanced Simplex Noise**: Integration of 3D/4D simplex noise for improved feature diversity and sample quality.
+- **Comprehensive Evaluation Metrics**: Precision, recall, Dice score, and more for thorough model assessment.
+- **Visualization Tools**: Diffusion videos and detection outputs enable interpretability and qualitative analysis.
 
 ---
 
 ## Example Outputs
 
 ### Diffusion Training Visualization
-![Distribution Visualization](assets/Timed_simplex_histogram1.png) 
-![Histogram Plot](assets/Timed_simplex_histogram1.png)
-![Octave Visualization](assets/SIMPLEX_TEST_Oct.gif)
-![SSIM Plot](assets/SSIM_plot.pdf)
-![Time Complexity Plots](assets/time_complexity_plot.pdf)
-![MRI Translation](assets/results/args200/Generation/1000_500_No22.png) 
+![Distribution Visualization](assets/Timed_simplex_histogram1.png)  
+![Histogram Plot](assets/Timed_simplex_histogram1.png)  
+![Octave Visualization](assets/SIMPLEX_TEST_Oct.gif)  
+![SSIM Plot](assets/SSIM_plot.pdf)  
+![Time Complexity Plots](assets/time_complexity_plot.pdf)  
+![MRI Translation](assets/results/args200/Generation/1000_500_No22.png)
 
 ### Anomaly Detection Results
 ![Anomaly Detection](assets/anomaly_detection_example.png)
@@ -33,13 +34,12 @@ This research paper introduces a novel self-supervised anomaly detection method 
 
 ## Project Structure
 
-```plaintext
 Annotsim/
 ├── src/
 │   ├── models/               # Model architectures (UNet, Transformer blocks, etc.)
 │   ├── utils/                # Helper functions (dataset loading, noise generation, etc.)
 │   ├── scripts/              # Training and evaluation scripts
-├── assets/                   # Visual assets and results
+├── assets/                   # Visualization assets and intermediate results
 ├── requirements.txt          # Python dependencies
 ├── setup.py                  # Installation script
 ├── README.md                 # Project documentation
@@ -48,8 +48,8 @@ Annotsim/
 Installation
 
 Prerequisites
-	•	Python 3.8 or later
-	•	CUDA-enabled GPU (optional but recommended for training)
+	•	Python 3.8+
+	•	CUDA-enabled GPU (recommended for training)
 
 Steps
 	1.	Clone the repository:
@@ -58,10 +58,10 @@ git clone https://github.com/MAXNORM8650/Annotsim.git
 cd Annotsim
 
 
-	2.	Create a virtual environment (optional but recommended):
+	2.	Optional: Create a virtual environment:
 
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # For Windows: venv\Scripts\activate
 
 
 	3.	Install dependencies:
@@ -69,53 +69,41 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 
-	4.	Install the repository as a package:
+	4.	Install as a package:
 
 pip install -e .
 
 Usage
 
-Train a Diffusion Model
+Training a Diffusion Model
 
-To train a diffusion model:
+Use a configuration file from test_args:
 
 python src/scripts/diffusion_training_UVW.py --config path/to/config.yaml
 
-Replace path/to/config.yaml with your desired configuration file from the test_args directory.
+Evaluating a Model
 
-Evaluate a Model
-
-To evaluate a model:
+Evaluate the model on a dataset:
 
 python src/scripts/detection.py --config path/to/config.yaml
 
 Datasets
 
-This project utilizes two publicly available datasets:
-	1.	BRATS2021: A dataset for brain tumor segmentation.
-	2.	Pneumonia X-Ray: A dataset for chest X-ray anomaly detection.
+This project supports multiple datasets, including:
+	•	BRATS2021: Brain tumor segmentation dataset.
+	•	Pneumonia X-Ray: Chest X-ray anomaly detection dataset.
 
-For more details, refer to the datasets’ official documentation:
+Refer to their official documentation for more details:
 	•	BRATS2021
 	•	Pneumonia X-Ray
 
 Results
-
-Diffusion Videos
-
-Generated videos during training and evaluation are saved in:
-
-outputs/diffusion-videos/
-
-Detection Outputs
-
-Detection results are saved in:
-
-outputs/detection-images/
+	•	Diffusion Videos: Saved in outputs/diffusion-videos/
+	•	Detection Outputs: Saved in outputs/detection-images/
 
 Citation
 
-If you use this work in your research, please cite the following paper:
+If you find this work helpful, please cite:
 
 @inproceedings{kumar2024annotsim,
   title={Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet},
@@ -129,7 +117,7 @@ If you use this work in your research, please cite the following paper:
 Contributors
 	•	Komal Kumar: GitHub Profile
 
-The project incorporates code and concepts from:
+This project builds upon and integrates work from:
 	•	AnoDDPM
 	•	Predictive Convolutional Attentive Block
 	•	Guided Diffusion
@@ -138,51 +126,23 @@ License
 
 This project is licensed under the MIT License.
 
-Acknowledgments
-
-We would like to thank the open-source community for providing valuable resources and tools that made this project possible.
-
-Getting Started
-
-For a quick start, refer to the Installation and Usage sections above. If you encounter any issues or have questions, feel free to open an issue on the GitHub repository.
-
-Contact
-
-For any inquiries or collaborations, please contact Komal Kumar at komal.kumar@example.com.
-
 Roadmap
-
-Future updates will include:
-	•	Integration with more diverse datasets.
-	•	Enhanced visualization tools.
-	•	Support for real-time anomaly detection.
-
-Stay tuned!
-
-Contributing
-
-Contributions are welcome! Please read the CONTRIBUTING.md for guidelines on how to proceed.
+	•	Further dataset integrations
+	•	Enhanced visualization and interpretability tools
+	•	Real-time anomaly detection support
 
 FAQ
 
-Q1: What is the main advantage of using DTUNet over traditional UNet architectures?
+Q1: Why use DTUNet over a traditional UNet?
+A: DTUNet’s integration of dynamic transformer blocks enables it to effectively handle temporal and noise-based image representations, improving anomaly segmentation performance in complex medical imaging scenarios.
 
-A1: DTUNet leverages dynamic transformer blocks to handle time and noise image patches as tokens, enhancing the model’s ability to segment anomalies more accurately, especially in complex and high-dimensional data.
+Q2: How do I customize the simplex noise function?
+A: Adjust parameters in utils/noise_generation.py as per the documentation for tailored noise generation strategies.
 
-Q2: How can I customize the simplex noise function?
+Contact
 
-A2: You can modify the simplex noise parameters in the utils/noise_generation.py file. Refer to the documentation for detailed instructions.
+For inquiries or collaboration opportunities:
+	•	Komal Kumar: komal.kumar@example.com
 
-Feel free to explore and contribute to Annotsim!
+We welcome contributions and suggestions! Please open an issue or submit a pull request to get involved.
 
----
-
-**Notes:**
-
-- Ensure that all asset paths (e.g., images and plots) are correctly placed in the `assets/` directory as specified in the project structure.
-- Replace placeholder values in the citation (e.g., `pages={XXXX--XXXX}`) with the actual page numbers once the paper is published.
-- Update the contact email (`komal.kumar@example.com`) with the actual email address.
-- Make sure to include a `LICENSE` file in the repository to specify the MIT License terms.
-- Create a `CONTRIBUTING.md` file to guide contributors on how to contribute to the project.
-
-This README provides a comprehensive overview of the Annotsim project, including its features, installation instructions, usage examples, and contribution guidelines. It is structured to help users and potential contributors understand and engage with the project effectively.
