@@ -17,6 +17,7 @@ This research paper introduces a novel self-supervised anomaly detection method 
 ## Example Outputs
 
 ### Diffusion Training Visualization
+![Distribution visulization](assets/Timed_simlex_hitogram1.png) 
 ![Diffusion Training](assets/SIMPLEX_TEST_Oct.gif)
 
 ### Anomaly Detection Results
