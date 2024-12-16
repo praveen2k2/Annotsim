@@ -16,12 +16,44 @@ This research paper introduces a novel self-supervised anomaly detection method 
 ## Example Outputs
 
 ### Diffusion Training Visualization
-![Distribution visulization](assets/Timed_simlex_hitogram1.png) ![Histogram plot](plotes/Timed_simlex_hitogram1.png)
-![Qualitative results](assets/annointo_v3.jpg)[](assets/anno_introduction2.png) 
-![Octave visulization](plotes/SIMPLEX_TEST_Oct.gif)
+
+#### Distribution Visualization & Histogram Plot
+
+| Distribution Visualization | Histogram Plot |
+|----------------------------|-----------------|
+| ![Distribution Visualization](assets/Timed_simplex_histogram1.png) | ![Histogram Plot](assets/Timed_simplex_histogram1.png) |
+
+#### Qualitative Results
+
+| Qualitative Result 1 | Qualitative Result 2 |
+|----------------------|----------------------|
+| ![Qualitative Results](assets/annointo_v3.jpg) | ![Qualitative Results](assets/anno_introduction2.png) |
+
+#### Octave Visualization
+
+![Octave Visualization](assets/plots/SIMPLEX_TEST_Oct.gif)
+
+#### SSIM Plot
+
 ![SSIM Plot](assets/SSIM_plot.pdf)
-![Time complexcity Plots](assets/time_complexity_plot.pdf)
-![MRI translation](assets/results/args200/Generation/1000_500_No22.png) 
+
+#### Time Complexity Plots
+
+![Time Complexity Plots](assets/time_complexity_plot.pdf)
+
+#### MRI Translation
+
+![MRI Translation](assets/results/args200/Generation/1000_500_No22.png)
+
+---
+
+### Anomaly Detection Results
+
+![Anomaly Detection](assets/anomaly_detection_example.png)
+
+### Simplex Noise Example
+
+![Simplex Noise](assets/simplex_noise_example.png)
 
 ### Anomaly Detection Results
 ![Anomaly Detection](assets/anomaly_detection_example.png)
