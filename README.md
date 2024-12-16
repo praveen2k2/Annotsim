@@ -1,9 +1,8 @@
 
 ---
 
-# Annotsim: Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet (WACV 2024)
-
-This repository contains the implementation of an anomaly detection framework using Denoising Diffusion Probabilistic Models (DDPMs) with simplex noise, developed in PyTorch. Annotsim provides tools for training, evaluating, and experimenting with self-supervised anomaly segmentation in medical imaging and beyond.
+# Annotsim: Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet (WACV 2024) 📈
+This research paper introduces a novel self-supervised anomaly detection method for image segmentation. It employs a diffusion model utilising a newly developed four-dimensional simplex noise function (Tsimplex) for improved efficiency and sample quality, especially in higher-dimensional and coloured images. The core of the model is a Dynamic Transformer UNet (DTUNet), a modified Vision Transformer architecture designed to handle time and noise image patches as tokens. Extensive experiments across three datasets demonstrate significant performance improvements over existing generative-based anomaly detection methods, particularly in medical imaging. The source code is publicly available.
 
 ## Features
 
