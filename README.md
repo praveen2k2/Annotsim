@@ -31,7 +31,7 @@ This research paper introduces a novel self-supervised anomaly detection method 
 
 #### Octave Visualization
 
-![Octave Visualization](assets/plots/SIMPLEX_TEST_Oct.gif)
+![Octave Visualization](assets/SIMPLEX_TEST_Oct.gif)
 
 #### SSIM Plot
 
