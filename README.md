@@ -157,3 +157,13 @@ The project imported from:
 - [Predictive Convolutional Attentive Block](https://github.com/ristea/sspcab)
 - [Guided Diffusion](https://github.com/openai/guided-diffusion)
 ---
+# Citation
+]
+@InProceedings{Kumar_2025_WACV,
+    author    = {Kumar, Komal and Chakraborty, Snehashis and Mahapatra, Dwarikanath and Bozorgtabar, Behzad and Roy, Sudipta},
+    title     = {Self-Supervised Anomaly Segmentation via Diffusion Models with Dynamic Transformer UNet},
+    booktitle = {Proceedings of the Winter Conference on Applications of Computer Vision (WACV)},
+    month     = {February},
+    year      = {2025},
+    pages     = {7917-7927}
+}
