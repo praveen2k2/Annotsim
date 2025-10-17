@@ -428,12 +428,14 @@ def main():
         Load arguments, run training and testing functions, then remove checkpoint directory
     :return:
     """
+    print("pass")
     # make directories
     for i in ['./model/', "./diffusion-videos/", './diffusion-training-images/']:
         try:
             os.makedirs(i)
         except OSError:
-            pass
+            print("some files may missing")
+             
 
     # read file from argument
     if len(sys.argv[1:]) > 0:
@@ -486,6 +488,7 @@ def main():
         in_channels = args["channels"]
 
     # if dataset is cifar, load different training & test set
+    print(f"Traing with {args["dataset"]}")
     if args["dataset"].lower() == "cifar":
         training_dataset_loader_, testing_dataset_loader_ = dataset.load_CIFAR10(args, True), \
                                                             dataset.load_CIFAR10(args, False)
