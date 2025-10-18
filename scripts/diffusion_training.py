@@ -529,7 +529,7 @@ def main():
     else:
         # load dataset
         training_dataset, testing_dataset = dataset.init_datasets(ROOT_DIR, args)
-#         print(len(training_dataset))
+        print(len(training_dataset))
 #         training_dataset_loader = torch.utils.data.DataLoader(training_dataset, batch_size=args['Batch_Size'], shuffle=True)
 #         testing_dataset_loader = torch.utils.data.DataLoader(testing_dataset, batch_size=args['Batch_Size'], shuffle=False)
         
