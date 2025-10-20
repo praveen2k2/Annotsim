@@ -225,7 +225,7 @@ def train(training_dataset_loader, testing_dataset_loader, args, resume):
             #             )
              
 
-        if epoch % 500 == 0 and epoch >= 0:
+        if epoch % 50 == 0 and epoch >= 0:
             if args['val_anno']:
                 anomalous_validation_1(ema, args, diffusion, testing_dataset_loader, epoch, row_size)
             save(unet=model, args=args, optimiser=optimiser, final=False, ema=ema, epoch=epoch)
@@ -539,7 +539,6 @@ def main():
 
     # if resuming, loaded model is attached to the dictionary
     loaded_model = {}
-    resume = 0
     if resume:
         if resume == 1:
             checkpoints = os.listdir(f'./model/diff-params-ARGS={args["arg_num"]}/checkpoint')
@@ -549,7 +548,7 @@ def main():
             for i in checkpoints:
                 try:
                     file_dir = f"./model/diff-params-ARGS={args['arg_num']}/checkpoint/{i}"
-                    loaded_model = torch.load(file_dir, map_location=device)
+                    loaded_model = torch.load(file_dir, map_location=device,weights_only=False)
                     break
                 except RuntimeError:
                     continue
@@ -557,7 +556,7 @@ def main():
          
         else:
             file_dir = f'./model/diff-params-ARGS={args["arg_num"]}/params-final.pt'
-            loaded_model = torch.load(file_dir, map_location=device)
+            loaded_model = torch.load(file_dir, map_location=device,weights_only=False)
 
     # load, pass args
     train(training_dataset_loader, testing_dataset_loader, args, loaded_model)
@@ -570,7 +569,7 @@ def main():
 
 if __name__ == '__main__':
     # ROOT_DIR = "./"
-    ROOT_DIR = r"/home/nithira/vision/Annotsim/"
+    ROOT_DIR = r"C:/Users/MSI/Projects/GitHub/Annotsim new/Annotsim/Annotsim/"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device", device)
     seed(1)
