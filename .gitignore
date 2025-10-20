@@ -1,1 +1,7 @@
+# Ignore model folder
+model/
+# Ignore all .pt files
+*.pt
 DATASETS/
+model/
+.pt
