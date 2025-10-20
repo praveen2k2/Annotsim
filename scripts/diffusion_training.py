@@ -489,7 +489,7 @@ def main():
         in_channels = args["channels"]
 
     # if dataset is cifar, load different training & test set
-    print(f"Traing with {args["dataset"]}")
+    print(f"Traing with {args['dataset']}")
     if args["dataset"].lower() == "cifar":
         training_dataset_loader_, testing_dataset_loader_ = dataset.load_CIFAR10(args, True), \
                                                             dataset.load_CIFAR10(args, False)
@@ -570,7 +570,7 @@ def main():
 
 if __name__ == '__main__':
     # ROOT_DIR = "./"
-    ROOT_DIR = r"C:/Users/MSI/Projects/GitHub/Annotsim/"
+    ROOT_DIR = r"/home/nithira/vision/Annotsim/"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device", device)
     seed(1)
