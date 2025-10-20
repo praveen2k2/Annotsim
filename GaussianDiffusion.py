@@ -558,8 +558,7 @@ class GaussianDiffusionModel:
         return indices, weights
 
     def predict_x_0_from_eps(self, x_t, t, eps):
-        return (extract(self.sqrt_recip_alphas_cumprod, t, x_t.shape, x_t.device) * x_t
-                - extract(self.sqrt_recipm1_alphas_cumprod, t, x_t.shape, x_t.device) * eps)
+        return (extract(self.sqrt_recip_alphas_cumprod, t, x_t.shape, x_t.device) * x_t - extract(self.sqrt_recipm1_alphas_cumprod, t, x_t.shape, x_t.device) * eps[0])
 
     def predict_eps_from_x_0(self, x_t, t, pred_x_0):
         return (extract(self.sqrt_recip_alphas_cumprod, t, x_t.shape, x_t.device) * x_t
@@ -783,7 +782,7 @@ class GaussianDiffusionModel:
             loss["loss"] = mean_flat((estimate_noise - noise).abs()) 
 #             + mean_flat((h - h_hat).abs())
         elif self.loss_type == "l2":
-            loss["loss"] = mean_flat((estimate_noise - noise).square())
+            loss["loss"] = mean_flat((estimate_noise[0] - noise).square())
         elif self.loss_type == "VIC":            
             loss["loss"] = self.dino_loss(estimate_noise, noise, t)
         elif self.loss_type == "l2+":
