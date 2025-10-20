@@ -2,6 +2,7 @@
 model/
 # Ignore all .pt files
 *.pt
+*.png
 DATASETS/
 model/
 .pt
