@@ -626,7 +626,6 @@ class MVTec(Dataset):
                 sample["mask"] = (sample["mask"] > 0).float()
 #         sample["lab"] = 1
         return sample
-
 class AnoBratsDataset(Dataset):
     """Anomalous MRI dataset."""
 
@@ -743,7 +742,7 @@ class MRIDataset(Dataset):
                  transforms.ToTensor()
                  ]
                 ) if transform else False
-        split_ratio = 0.5
+        split_ratio = 0.9
         train_test_filenames = os.listdir(ROOT_DIR)
         
         random.shuffle(train_test_filenames)
@@ -811,14 +810,17 @@ class MRIDataset(Dataset):
         
         image = torch.from_numpy(image[:, :, slice_idx:slice_idx + 1]).float().reshape(self.shp)
 #         .reshape(self.shp).astype(np.float32)
-        mask = torch.from_numpy(mask[:, :, slice_idx:slice_idx + 1]).float().reshape(self.shp)
-#         .reshape(self.shp).astype(np.float32)  
+#         mask = torch.from_numpy(mask[:, :, slice_idx:slice_idx + 1]).float().reshape(self.shp)
+#         .reshape(self.shp).astype(np.float32) 
+        # image = image[:, slice_idx:slice_idx + 1, :].reshape(self.shp)
+        mask = mask[:,:, slice_idx:slice_idx + 1].float().reshape(self.shp)   
         label = 1 if mask.max()>0 else 0
         if self.transform:
             image = self.transform(image)
             mask = self.transform(mask)
         sample = {'image': image, "filenames": self.filenames[idx], "mask": mask, "label" : label}
         return sample
+
 class MatTDataset(torch.utils.data.Dataset):
     def __init__(self, directory, transform=None, img_size = 256):
         
@@ -912,8 +914,6 @@ class HnABRATS(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.filenames)
-
-
 class BRATSDataset(torch.utils.data.Dataset):
     def __init__(self, directory , test_flag=False):
         '''
@@ -995,9 +995,6 @@ class BRATSDataset(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.database)
-
-
-
 class AnomalousMRIDataset(Dataset):
     """Anomalous MRI dataset."""
 
@@ -1153,8 +1150,6 @@ class AnomalousMRIDataset(Dataset):
         sample["filenames"] = self.filenames[idx]
         # sample = {'image': image, "filenames": self.filenames[idx], "slices":slice_idx}
         return sample
-
-
 def load_CIFAR10(args, train=True):
     return torch.utils.data.DataLoader(
             datasets.CIFAR10(
@@ -1233,7 +1228,6 @@ class MURA():
             return len(self.train_img_label)
         else:
             return len(self.test_img_label)
-
 class Pneumonia():
     def __init__(self, input_size = 256, root = r"C:\Users\Admin\Dropbox\PC\Documents\Anomaly Detection\AnoDDPM\DATASETS\CheNemonia\chest_xray\train\NORMAL", data_len=None, is_train = True):
         self.input_size = input_size
@@ -1266,7 +1260,6 @@ class Pneumonia():
 
     def __len__(self):
         return len(self.database)
-
 class AnnoDataset(torch.utils.data.Dataset):
     def __init__(self, directory, set = "train", input_size = 256, channels = 1):
         super().__init__()
@@ -1356,9 +1349,7 @@ class AnnoDataset(torch.utils.data.Dataset):
                         self.mfile_paths.append(os.path.join(rout, f))
                         self.mfile_names.append(f)    
     def __len__(self):
-        return len(self.file_paths)
-    
-    
+        return len(self.file_paths)   
 class TUMOR():
     def __init__(self, input_size, root = r"C:\Users\Admin\Dropbox\PC\Documents\FGVC_MSFM\MMAL-Net\datasets", is_train=True, data_len=None):
         self.input_size = input_size
@@ -1416,7 +1407,6 @@ class TUMOR():
             return len(self.train_img_label)
         else:
             return len(self.test_img_label)
-
 class AnoClsDataset(Dataset):
     def __init__(self, ROOT_DIR, img_size, transform=None, data_len=None):
         self.input_size = img_size
@@ -1440,6 +1430,7 @@ class AnoClsDataset(Dataset):
 
     def __len__(self):
         return len(self.test_img_label)
+
 if __name__ == "__main__":
     # load_datasets_for_test()
     # get_segmented_labels(True)
