@@ -3,7 +3,7 @@ import torch
 from skimage.metrics import structural_similarity as ssim
 from sklearn.metrics import auc, roc_curve
 from matplotlib import animation
-from helpers import gridify_output
+from utils.helpers import gridify_output
 import numpy as np
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def main():
@@ -273,12 +273,12 @@ def main():
 
 
 if __name__ == '__main__':
-    import dataset
+    import utils.dataset
     import os
     import matplotlib.animation as animation
     import numpy as np
     from GaussianDiffusion import GaussianDiffusionModel, get_beta_schedule
-    from UNet import UNetModel
+    from src.models.UNet import UNetModel
     from detection import load_parameters
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
