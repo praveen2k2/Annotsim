@@ -309,6 +309,8 @@ def training_outputs(diffusion, x, lab, est, noisy, epoch, row_size, ema, args, 
             plt.title(f'real, sample, prediction x_0-{epoch}epoch, "mse')
         else:
             # for a given t, output x_0, x_t, & prediction of noise in x_t & MSE
+            if isinstance(est, tuple):
+                est=est[0]
             out = torch.cat(
                     (x[:row_size, ...].cpu(), noisy[:row_size, ...].cpu(), est[:row_size, ...].cpu(),
                      (est - noisy).square().cpu()[:row_size, ...])
@@ -428,7 +430,6 @@ def main():
         Load arguments, run training and testing functions, then remove checkpoint directory
     :return:
     """
-    print("pass")
     # make directories
     for i in ['./model/', "./diffusion-videos/", './diffusion-training-images/']:
         try:
@@ -538,7 +539,7 @@ def main():
 
     # if resuming, loaded model is attached to the dictionary
     loaded_model = {}
-    resume = 1
+    resume = 0
     if resume:
         if resume == 1:
             checkpoints = os.listdir(f'./model/diff-params-ARGS={args["arg_num"]}/checkpoint')
@@ -568,7 +569,8 @@ def main():
 
 
 if __name__ == '__main__':
-    ROOT_DIR = "./"
+    # ROOT_DIR = "./"
+    ROOT_DIR = r"C:/Users/MSI/Projects/GitHub/Annotsim/"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device", device)
     seed(1)
