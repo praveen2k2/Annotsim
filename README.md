@@ -115,10 +115,29 @@ python src/scripts/diffusion_training_UVW.py --argN
 Replace `argN` with your desired configuration file from "test_args" file.
 
 ### Evaluate a Model
-To evaluate a model:
+You can evaluate a trained model by pointing to the argument number used for training. The code accepts any of the following forms for the parameter selector:
+
+- Just the number (e.g., `26`)
+- `args26` or `args26.json`
+- Model directory name (e.g., `diff-params-ARGS=26`)
+
+Examples:
+
 ```bash
-python src/scripts/detection.py --argN
+# Evaluate using numeric arg
+python evaluation/model_evaluation.py 26
+
+# Or using args prefix
+python evaluation/model_evaluation.py args26
+
+# Or passing the model folder name
+python evaluation/model_evaluation.py diff-params-ARGS=26
 ```
+
+Notes:
+- Final checkpoints are searched in either `./model/diff-params-ARGS=<N>/params-final.pt` or `./model/diff-params-ARGS=<N>/checkpoint/params-final.pt`.
+- If no final checkpoint is found, the latest available checkpoint under the `checkpoint/` folder is used.
+- Outputs like diffusion videos are generated under `./diffusion-videos/ARGS=<N>/...` and are ignored by Git.
 
 ---
 
@@ -135,9 +154,9 @@ For more details, refer to the datasets' official documentation.
 ## Results
 
 ### Diffusion Videos
-Generated videos during training and evaluation are saved in:
+Generated videos during training and evaluation are saved under:
 ```plaintext
-outputs/diffusion-videos/
+diffusion-videos/
 ```
 
 ### Detection Outputs
@@ -167,3 +186,26 @@ The project imported from:
     year      = {2025},
     pages     = {7917-7927}
 }
+
+---
+
+## Troubleshooting
+
+### Git push fails with HTTP 408 / large pack
+If you accidentally committed large generated files (e.g., GIFs under `diffusion-videos/`), pushes can fail. The repository's `.gitignore` excludes these, but if already committed:
+
+1) Create a backup branch:
+```bash
+git branch backup-large-files
+```
+
+2) Reset to a commit before the large files, and commit only source changes:
+```bash
+git reset --soft <good_commit_sha>
+git restore --staged diffusion-videos evaluation/__pycache__ utils/__pycache__ __pycache__
+git add -u
+git commit -m "Remove generated artifacts from history"
+git push
+```
+
+Consider using Git LFS for very large artifacts that must be versioned.
