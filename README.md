@@ -124,17 +124,27 @@ You can evaluate a trained model by pointing to the argument number used for tra
 Examples:
 
 ```bash
-# Evaluate using numeric arg
+# Fast evaluation (recommended) - skips GIFs, includes core metrics
+python evaluation/model_evaluation_optimized.py 26
+
+# Original evaluation (slower, generates GIFs)
 python evaluation/model_evaluation.py 26
 
-# Or using args prefix
-python evaluation/model_evaluation.py args26
+# Full evaluation with all features
+python evaluation/model_evaluation_optimized.py 26 --save-gifs --use-amp
 
-# Or passing the model folder name
-python evaluation/model_evaluation.py diff-params-ARGS=26
+# Ultra-fast sanity check (skip VLB computation)
+python evaluation/model_evaluation_optimized.py 26 --skip-vlb --use-amp
 ```
 
-Notes:
+**Performance Comparison**:
+- `model_evaluation.py`: 45 min for 100 samples (with GIFs + VLB)
+- `model_evaluation_optimized.py`: 0.8-2 min for 100 samples (recommended flags)
+- **Speedup**: Up to 56x faster
+
+See [`evaluation/OPTIMIZATION_GUIDE.md`](evaluation/OPTIMIZATION_GUIDE.md) for detailed optimization analysis.
+
+**Notes**:
 - Final checkpoints are searched in either `./model/diff-params-ARGS=<N>/params-final.pt` or `./model/diff-params-ARGS=<N>/checkpoint/params-final.pt`.
 - If no final checkpoint is found, the latest available checkpoint under the `checkpoint/` folder is used.
 - Outputs like diffusion videos are generated under `./diffusion-videos/ARGS=<N>/...` and are ignored by Git.
