@@ -808,11 +808,19 @@ class MRIDataset(Dataset):
         else:
             slice_idx = 120
         
-        image = torch.from_numpy(image[:, :, slice_idx:slice_idx + 1]).float().reshape(self.shp)
+        # image = torch.from_numpy(image[:, :, slice_idx:slice_idx + 1]).float().reshape(self.shp)
 #         .reshape(self.shp).astype(np.float32)
 #         mask = torch.from_numpy(mask[:, :, slice_idx:slice_idx + 1]).float().reshape(self.shp)
 #         .reshape(self.shp).astype(np.float32) 
         # image = image[:, slice_idx:slice_idx + 1, :].reshape(self.shp)
+
+        blank = np.zeros((256, 256))
+
+        # Compute padding (centered)
+        pad = (256 - 192) // 2
+        blank[:, pad:pad+192] = image[:, slice_idx:slice_idx + 1,: ].reshape(256, 192)
+        image=blank
+        image = torch.from_numpy(blank).float().reshape(self.shp)
         mask = mask[:,:, slice_idx:slice_idx + 1].float().reshape(self.shp)   
         label = 1 if mask.max()>0 else 0
         if self.transform:
