@@ -172,14 +172,20 @@ def testing(testing_dataset_loader, diffusion, args, ema, model):
         if args["dataset"] == "cifar" or args["dataset"] == "carpet":
             # cifar outputs [data,class]
             x = data[0].to(device)
+            lab = None
         else:
             x = data["image"]
             x = x.to(device)
+            if args["cls_cond"] is not None:
+                lab = data["label"]
+                lab = lab.to(device)
+            else:
+                lab = args["cls_cond"]
 
         row_size = min(5, args['Batch_Size'])
 
         fig, ax = plt.subplots()
-        out = diffusion.forward_backward(ema, x, see_whole_sequence="half", t_distance=i)
+        out = diffusion.forward_backward(ema, x, lab, see_whole_sequence="half", t_distance=i)
         imgs = [[ax.imshow(gridify_output(x, row_size), animated=True)] for x in out]
         ani = animation.ArtistAnimation(
                 fig, imgs, interval=200, blit=True,
@@ -210,11 +216,17 @@ def testing(testing_dataset_loader, diffusion, args, ema, model):
         if args["dataset"] != "cifar":
             x = data["image"]
             x = x.to(device)
+            if args["cls_cond"] is not None:
+                lab = data["label"]
+                lab = lab.to(device)
+            else:
+                lab = args["cls_cond"]
         else:
             # cifar outputs [data,class]
             x = data[0].to(device)
+            lab = None
 
-        out = diffusion.forward_backward(ema, x, see_whole_sequence=None, t_distance=args["T"] // 2)
+        out = diffusion.forward_backward(ema, x, lab, see_whole_sequence=None, t_distance=args["T"] // 2)
         psnr.append(PSNR(out, x))
 
     print(
@@ -244,19 +256,57 @@ def main():
     print(f"args{args['arg_num']}")
 
     in_channels = 3 if args["dataset"].lower() == "cifar" else 1
-    unet = UNetModel(
-            args['img_size'][0], args['base_channels'], channel_mults=args['channel_mults'], in_channels=in_channels
-            )
-    ema = UNetModel(
-            args['img_size'][0], args['base_channels'], channel_mults=args['channel_mults'], in_channels=in_channels
-            )
+    
+    # Use DHUNet model architecture
+    unet = DHUNet(
+        img_size=args['img_size'][0],
+        patch_size=args["patch_size"], 
+        in_chans=in_channels,
+        embed_dim=args['embed_dim'],     
+        depth=args['depth'], 
+        num_heads=args["num_heads"],
+        mlp_ratio=args["mlp_ratio"], 
+        qkv_bias=False, 
+        qk_scale=None, 
+        norm_layer=nn.LayerNorm,
+        mlp_time_embed=True,
+        num_classes=args["cls_cond"],
+        conv=True, 
+        skip=True
+    )
+    
+    ema = DHUNet(
+        img_size=args['img_size'][0],
+        patch_size=args["patch_size"], 
+        in_chans=in_channels,
+        embed_dim=args['embed_dim'],     
+        depth=args['depth'], 
+        num_heads=args["num_heads"],
+        mlp_ratio=args["mlp_ratio"], 
+        qkv_bias=False, 
+        qk_scale=None, 
+        norm_layer=nn.LayerNorm,
+        mlp_time_embed=True,
+        num_classes=args["cls_cond"],
+        conv=True, 
+        skip=True
+    )
 
     betas = get_beta_schedule(args['T'], args['beta_schedule'])
 
     diff = GaussianDiffusionModel(
-            args['img_size'], betas, loss_weight=args['loss_weight'],
-            loss_type=args['loss-type'], noise=args["noise_fn"]
-            )
+        args['img_size'],
+        betas, 
+        loss_weight=args['loss_weight'],
+        loss_type=args['loss-type'],
+        noise=args["noise_fn"],
+        octave=args["octave"],
+        frequency=args["frequency"],
+        persistence=args["persistence"],
+        patch_size=args["patch_size"],
+        sigma=args["sigma"],
+        img_channels=args["channels"]
+    )
 
     ema.load_state_dict(output["ema"])
     ema.to(device)
@@ -273,12 +323,14 @@ def main():
 
 
 if __name__ == '__main__':
-    import utils.dataset
+    import utils.dataset as dataset
     import os
     import matplotlib.animation as animation
     import numpy as np
+    import torch.nn as nn
     from GaussianDiffusion import GaussianDiffusionModel, get_beta_schedule
     from src.models.UNet import UNetModel
+    from src.models.UModels.DHUNet import DHUNet
     from detection import load_parameters
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

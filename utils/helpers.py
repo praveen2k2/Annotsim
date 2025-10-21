@@ -64,19 +64,81 @@ def load_checkpoint(param, use_checkpoint, device):
     :param use_checkpoint: checkpointed or final model
     :return:
     """
+    # Resolve the actual model directory and arg number from various accepted param formats
+    def _resolve_model_dir(p):
+        base = './model'
+        # If already a subdir under ./model
+        if isinstance(p, str) and os.path.isdir(os.path.join(base, p)):
+            model_dir = os.path.join(base, p)
+        # If full or relative path provided
+        elif isinstance(p, str) and os.path.isdir(p):
+            model_dir = p
+        else:
+            # Normalize inputs like '26', 'args26', 'args26.json', 'diff-params-ARGS=26'
+            if isinstance(p, str) and p.startswith('diff-params-ARGS='):
+                num = p.split('=')[-1]
+            elif isinstance(p, str) and p.startswith('args') and p.endswith('.json'):
+                num = p[4:-5]
+            elif isinstance(p, str) and p.startswith('args'):
+                num = p[4:]
+            else:
+                num = str(p)
+            model_dir = os.path.join(base, f'diff-params-ARGS={num}')
+
+        # Derive arg number from directory name
+        name = os.path.basename(model_dir.rstrip('/'))
+        if 'diff-params-ARGS=' in name:
+            arg_num = name.split('=')[-1]
+        else:
+            import re
+            m = re.search(r'(\d+)', str(p))
+            arg_num = m.group(1) if m else ''
+        return model_dir, arg_num
+
+    model_dir, _ = _resolve_model_dir(param)
+    if not os.path.isdir(model_dir):
+        available = []
+        try:
+            available = sorted([d for d in os.listdir('./model') if os.path.isdir(os.path.join('./model', d))])
+        except Exception:
+            pass
+        raise FileNotFoundError(f"Model directory not found: {model_dir}. Available: {available}")
+
     if not use_checkpoint:
-        return torch.load(f'./model/diff-params-ARGS={param}/params-final.pt', map_location=device)
-    else:
-        checkpoints = os.listdir(f'./model/diff-params-ARGS={param}/checkpoint')
-        checkpoints.sort(reverse=True)
-        for i in checkpoints:
-            try:
-                file_dir = f"./model/diff-params-ARGS={param}/checkpoint/{i}"
-                loaded_model = torch.load(file_dir, map_location=device)
-                break
-            except RuntimeError:
-                continue
-        return loaded_model
+        # Try common locations for the final params
+        candidates = [
+            os.path.join(model_dir, 'params-final.pt'),
+            os.path.join(model_dir, 'checkpoint', 'params-final.pt'),
+        ]
+        for path in candidates:
+            if os.path.isfile(path):
+                return torch.load(path, map_location=device)
+        # Fallback to most recent checkpoint if final not found
+        use_checkpoint = True
+
+    # Load from checkpoints directory
+    ckpt_dir = os.path.join(model_dir, 'checkpoint')
+    if not os.path.isdir(ckpt_dir):
+        raise FileNotFoundError(f"Checkpoint directory not found: {ckpt_dir}")
+
+    entries = [f for f in os.listdir(ckpt_dir) if f.endswith('.pt')]
+    if not entries:
+        raise FileNotFoundError(f"No checkpoint files found in: {ckpt_dir}")
+
+    # Prefer params-final.pt if present, otherwise newest (reverse lexicographic)
+    ordered = ([] if 'params-final.pt' not in entries else ['params-final.pt']) + \
+              sorted([f for f in entries if f != 'params-final.pt'], reverse=True)
+
+    last_exc = None
+    for fname in ordered:
+        try:
+            return torch.load(os.path.join(ckpt_dir, fname), map_location=device)
+        except RuntimeError as e:
+            last_exc = e
+            continue
+    if last_exc:
+        raise last_exc
+    raise FileNotFoundError(f"Unable to load a valid checkpoint from: {ckpt_dir}")
 
 
 def load_parameters(device, argN = None):
@@ -106,27 +168,48 @@ def load_parameters(device, argN = None):
 #     use_checkpoint = True
 #     print(params)
     for param in params:
-        if param.isnumeric():
-            output = load_checkpoint(param, use_checkpoint, device)
-        elif param[:4] == "args" and param[-5:] == ".json":
-            output = load_checkpoint(param[4:-5], use_checkpoint, device)
-        elif param[:4] == "args":
-            output = load_checkpoint(param[4:], use_checkpoint, device)
-        elif  isinstance(param, str):
-            output = load_checkpoint(param, use_checkpoint, device)
+        # Normalize param to support multiple formats
+        if isinstance(param, str) and param.isnumeric():
+            norm = param
+        elif isinstance(param, str) and param.startswith("args") and param.endswith(".json"):
+            norm = param[4:-5]
+        elif isinstance(param, str) and param.startswith("args"):
+            norm = param[4:]
+        elif isinstance(param, str) and param.startswith("diff-params-ARGS="):
+            norm = param  # already a model folder name
         else:
-            raise ValueError(f"Unsupported input {param}")
+            norm = str(param)
+
+        output = load_checkpoint(norm, use_checkpoint, device)
 
         if "args" in output:
             args = output["args"]
         else:
+            # Derive the argument number robustly for loading args JSON
+            arg_num = None
+            if isinstance(param, str) and param.startswith('diff-params-ARGS='):
+                arg_num = param.split('=')[-1]
+            elif isinstance(param, str) and param.startswith('args') and param.endswith('.json'):
+                arg_num = param[4:-5]
+            elif isinstance(param, str) and param.startswith('args'):
+                arg_num = param[4:]
+            elif isinstance(param, str) and param.isnumeric():
+                arg_num = param
+            else:
+                import re
+                m = re.search(r'(\d+)', str(param))
+                arg_num = m.group(1) if m else None
+
+            if not arg_num:
+                raise ValueError(f"Could not infer arg number from parameter '{param}'")
+
             try:
-                with open(f'./test_args/args{param[17:]}.json', 'r') as f:
+                with open(f'./test_args/args{arg_num}.json', 'r') as f:
                     args = json.load(f)
-                args['arg_num'] = param[17:]
+                args['arg_num'] = arg_num
                 args = defaultdict_from_json(args)
             except FileNotFoundError:
-                raise ValueError(f"args{param[17:]} doesn't exist for {param}")
+                raise ValueError(f"args{arg_num} doesn't exist for {param}")
 
         if "noise_fn" not in args:
             args["noise_fn"] = "gauss"

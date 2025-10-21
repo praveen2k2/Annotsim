@@ -5,4 +5,5 @@ model/
 *.png
 DATASETS/
 model/
+diffusion-videos/
 .pt
